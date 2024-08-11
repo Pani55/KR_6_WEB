@@ -46,16 +46,50 @@ class Message(models.Model):
         verbose_name_plural = "сообщения"
 
 
+class MailingTry(models.Model):
+    try_datetime = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name="время и дата попытки",
+        editable=False
+    )
+    status = models.BooleanField(
+        verbose_name="статус попытки",
+        editable=False
+    )
+    response = models.TextField(
+        null=True,
+        verbose_name="ответ почтового сервера",
+        editable=False
+    )
+    mailing = models.ForeignKey(
+        to="mailing.Mailing",
+        on_delete=models.CASCADE,
+        verbose_name="рассылка",
+        null=True,
+        blank=True
+    )
+
+    def __str__(self):
+        return (f'Попытка рассылки {self.pk}'
+                f'- {self.try_datetime} - {self.status}')
+
+    class Meta:
+        verbose_name = "попытка отправки"
+        verbose_name_plural = "попытки отправки"
+
+
 class Mailing(models.Model):
     name = models.CharField(
         max_length=150,
         verbose_name="название рассылки"
     )
     first_send_datetime = models.DateTimeField(
-        verbose_name="дата первого отправления"
+        verbose_name="дата первого отправления",
+        auto_now_add=True
     )
     next_send_datetime = models.DateTimeField(
-        verbose_name="дата следующего отправления"
+        verbose_name="дата следующего отправления",
+        auto_now_add=True
     )
     last_send_datetime = models.DateTimeField(
         verbose_name="дата последнего отправления"
@@ -102,38 +136,3 @@ class Mailing(models.Model):
     class Meta:
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
-
-
-class MailingTry(models.Model):
-    try_datetime = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name="время и дата попытки",
-        editable=False
-    )
-    status = models.BooleanField(
-        verbose_name="статус попытки",
-        editable=False
-    )
-    response = models.TextField(
-        null=True,
-        verbose_name="ответ почтового сервера",
-        editable=False
-    )
-    mailing = models.ForeignKey(
-        Mailing,
-        on_delete=models.CASCADE,
-        verbose_name="рассылка"
-    )
-    client = models.ForeignKey(
-        Client,
-        on_delete=models.CASCADE,
-        verbose_name="клиент"
-    )
-
-    def __str__(self):
-        return (f'Попытка рассылки {self.pk} - {self.mailing} '
-                f'- {self.try_datetime} - {self.status} - {self.client}')
-
-    class Meta:
-        verbose_name = "попытка отправки"
-        verbose_name_plural = "попытки отправки"

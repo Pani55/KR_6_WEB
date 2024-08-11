@@ -2,21 +2,21 @@
     <div class="container">
         <div class="row">
             <div class="col-sm-8 col-md-7 py-4">
-                <h4>тут текст</h4>
-                <p class="text-body-secondary">и тут текст</p>
+                <h4>{{ request.user }}</h4>
+                {% if user.is_authenticated %}
+                <p class="text-body-secondary">Вы авторизованы!</p>
+                {% endif %}
             </div>
             <div class="col-sm-4 offset-md-1 py-4">
                 <h4>Навигация</h4>
                 <ul class="list-unstyled">
-                    <li><a href="#" class="text-white">Главная</a></li>
+                    <li><a href="{% url 'mailing:home' %}" class="text-white">Главная</a></li>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'users:logout' %}">Выход</a></li>
                     {% else %}
                     <li><a href="{% url 'users:login' %}">Вход</a></li>
                     <li><a href="{% url 'users:register' %}">Зарегистрироваться</a></li>
                     {% endif %}
-                    <li><a href="#" class="text-white">Заметки</a></li>
-                    <li><a href="#" class="text-white">Категории</a></li>
                 </ul>
             </div>
         </div>

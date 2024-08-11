@@ -26,6 +26,5 @@ class ClientAdmin(admin.ModelAdmin):
 
 @admin.register(MailingTry)
 class MailingTryAdmin(admin.ModelAdmin):
-    list_display = ('try_datetime', 'status', 'response', 'mailing', 'client')
+    list_display = ('try_datetime', 'status', 'response')
     list_filter = ('try_datetime', 'status')
-    search_fields = ('client',)

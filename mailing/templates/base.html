@@ -178,12 +178,14 @@
     <section class="py-5 text-center container">
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
-                <h1 class="fw-light">ВАще текст</h1>
-                <p class="lead text-body-secondary">тееекст</p>
+                <h1 class="fw-light">ManySend's</h1>
+                <p class="lead text-body-secondary">Сервис рассылки писем.</p>
                 {% if user.is_authenticated %}
                 <p>
-                    <a class="btn btn-primary" href="{% url 'mailing:mailing_create' %}" role="button">Создать рассылку</a>
-                    <a class="btn btn-primary" href="{#}" role="button">Создать сообщение</a>
+                    <a class="btn btn-primary" href="{% url 'mailing:mailing_list' %}" role="button">Рассылки</a>
+                    <a class="btn btn-primary" href="{% url 'mailing:message_list' %}" role="button">Сообщения</a>
+                    <a class="btn btn-primary" href="{% url 'mailing:client_list' %}" role="button">Клиенты</a>
+                    <a class="btn btn-primary" href="{% url 'mailing:mailingtry_list' %}" role="button">История рассылки</a>
                 </p>
                 {% endif %}
             </div>

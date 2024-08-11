@@ -21,12 +21,7 @@ class User(AbstractUser):
         blank=True,
         null=True,
         help_text="Введите страну")
-    avatar = models.ImageField(
-        upload_to='users/avatars/',
-        blank=True,
-        null=True,
-        verbose_name='Аватар'
-    )
+
     token = models.CharField(
         max_length=100,
         verbose_name='Токен',
