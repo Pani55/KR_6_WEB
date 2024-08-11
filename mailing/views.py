@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView, TemplateView
+from django.views.generic import (ListView, CreateView, UpdateView,
+                                  DeleteView, DetailView, TemplateView)
 
 from mailing.forms import MailingForm, MessageForm
 from mailing.models import Mailing, Message, Client, MailingTry
-from mailing.services import get_uniq_clients_count, get_mailings_counts
+from mailing.services import (get_uniq_clients_count, get_mailings_counts,
+                              get_random_blogs)
 
 
 # Create your views here.
@@ -17,11 +19,19 @@ class HomeTemplateView(TemplateView):
         context['uniq_clients'] = get_uniq_clients_count()
         context['mailings_count'], context[
             'active_mailings'] = get_mailings_counts()
+        context['blog_list'] = get_random_blogs()
         return context
 
 
 class MailingListView(LoginRequiredMixin, ListView):
     model = Mailing
+
+    def get_queryset(self, *args, **kwargs):
+        user = self.request.user
+        if user.is_superuser or user.has_perm(
+            'mailing.can_see_all_mailings'):
+            return Mailing.objects.all()
+        return Mailing.objects.filter(owner=user)
 
 
 class MailingDetailView(LoginRequiredMixin ,DetailView):

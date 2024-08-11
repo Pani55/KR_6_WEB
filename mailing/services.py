@@ -1,11 +1,13 @@
 import smtplib
 from datetime import datetime, timedelta
+from random import shuffle
 
 import pytz
 from apscheduler.schedulers.background import BackgroundScheduler
 from django.core.cache import cache
 from django.core.mail import send_mail
 
+from blog.models import Blog
 from config import settings
 from config.settings import CACHE_ENABLED
 from mailing.models import Mailing, MailingTry, Client
@@ -99,7 +101,7 @@ def get_mailings_counts():
         key_2 = 'active_mailings_count'
         mailings_count = cache.get(key_1)
         active_mailings_count = cache.get(key_2)
-        if mailings_count or active_mailings_count:
+        if not mailings_count or not active_mailings_count:
             mailings = Mailing.objects.all()
             mailings_count = mailings.count()
             active_mailings_count = mailings.filter(status=1).count()
@@ -109,3 +111,16 @@ def get_mailings_counts():
         mailings_count = Mailing.objects.all().count()
         active_mailings_count = Mailing.objects.filter(status=1).count()
     return mailings_count, active_mailings_count
+
+
+def get_random_blogs():
+    if CACHE_ENABLED:
+        key = 'random_blogs'
+        random_blogs = cache.get(key)
+        if random_blogs is None:
+            random_blogs = list(Blog.objects.order_by('?')[:12])
+            cache.set(key, random_blogs, timeout=60)
+    else:
+        random_blogs = list(Blog.objects.order_by('?')[:12])
+    shuffle(random_blogs)
+    return random_blogs[:3]

@@ -136,3 +136,7 @@ class Mailing(models.Model):
     class Meta:
         verbose_name = "рассылка"
         verbose_name_plural = "рассылки"
+        permissions = (
+            ('mailing.can_toggle_status', 'Можно переключать статус рассылки'),
+            ('mailing.can_see_all_mailings', 'Можно видеть все рассылки'),
+        )
