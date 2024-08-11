@@ -11,12 +11,11 @@
             <div class="col">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h4>{{ mailingtry.status }}</h4>
+                        <h4>Статус попытки==> {{ mailingtry.status }}</h4>
+                        <h7>Код ответа сервера==> {{ mailingtry.response }}</h7>
+                        <h4>Название рассылки==> {{ mailingtry.mailing }}</h4>
+                        <h7>Дата попытки==> {{ mailingtry.try_datetime }}</h7>
                         <div class="d-flex justify-content-between align-items-center">
-                            <div class="btn-group">
-                                <a class="btn btn-primary" href="{#}"
-                                   role="button">Подробнее</a>
-                            </div>
                         </div>
                     </div>
                 </div>
