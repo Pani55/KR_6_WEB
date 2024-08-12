@@ -22,7 +22,7 @@ class MailingForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Mailing
         fields = ['name',
-                  'last_send_datetime', 'period', 'status', 'message',
+                  'last_send_datetime', 'period', 'message',
                   'clients']
         widgets = {
             'last_send_datetime': forms.DateTimeInput(
@@ -36,7 +36,7 @@ class MailingForm(StyleFormMixin, ModelForm):
 class MessageForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Message
-        fields = '__all__'
+        fields = ['mail_theme', 'message']
 
 
 class ClientForm(StyleFormMixin, ModelForm):
