@@ -13,10 +13,9 @@ from config.settings import CACHE_ENABLED
 from mailing.models import Mailing, MailingTry, Client
 
 
-# Функция старта периодических задач
 def start():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(send_mailing, 'interval', seconds=10)
+    scheduler.add_job(send_mailing, 'interval', seconds=55)
     scheduler.start()
 
 
@@ -27,7 +26,6 @@ def send_mailing():
     mailings = Mailing.objects.filter(status__in=[0, 1])
 
     for mailing in mailings:
-        # Если достигли end_date, завершить рассылку
         if mailing.last_send_datetime and current_datetime >= mailing.last_send_datetime:
             mailing.status = 3
             mailing.save()
@@ -60,7 +58,6 @@ def send_mailing():
                     try_datetime=datetime.now(zone)
                 )
 
-                # Обновление времени следующей отправки
             if mailing.period == 1:
                 mailing.next_send_datetime += timedelta(minutes=1)
             elif mailing.period == 60:

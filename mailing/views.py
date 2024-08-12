@@ -54,6 +54,7 @@ class MailingCreateView(LoginRequiredMixin, CreateView):
         mailing = form.save(commit=False)
         mailing.next_send_datetime = mailing.first_send_datetime
         mailing.owner = self.request.user
+        mailing.status = 0
         mailing.save()
         return super().form_valid(form)
 
@@ -81,6 +82,12 @@ class MessageCreateView(LoginRequiredMixin, CreateView):
     model = Message
     form_class = MessageForm
     success_url = reverse_lazy("mailing:message_list")
+
+    def form_valid(self, form):
+        message = form.save(commit=False)
+        message.owner = self.request.user
+        message.save()
+        return super().form_valid(form)
 
 
 class MessageUpdateView(LoginRequiredMixin, UpdateView):
